@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>리듬게임</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.87.0/phaser.min.js"integrity="sha512-e251dDfxfj70o3iWsf84M612cWbWdTXjVbFXA7MavobTcKB1sCLV+WNiduc20UrpWLXRgi1tgob1TOAfySx9Xg=="crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  
+</head>
+<style>
+
+  *{box-sizing: border-box;}
+  
+  #gamebox{
+    
+    border: 1px solid black;
+    width: 960px;
+    height: 550px;
+    margin: auto;
+    
+  }
+  </style>
+
+<body>
+  <div id="gamebox"></div>
+  <script src="/assets/js/rhythmStart.js"></script>
+  <script src="/assets/js/rhythmMain.js"></script>
+  <script src="/assets/js/rhythmGameOver.js"></script>
+
+  <script>
+    let config = {
+      type:Phaser.AUTO, //게임엔진으로 그림을 그릴때 어떻게 그릴것인가
+      parent:"gamebox",
+      width:960,
+      height:550,
+      physics:{
+          default:'arcade',//어떤 물리엔진을 사용할지.
+          arcade:{
+            
+          },
+          
+      },
+      
+      scene:[rhythmStart, rhythmMain, rhythmGameOver],
+      fps:{
+        target : 60,
+        forceSetTimeOut:true
+      }
+    };
+    let game = new Phaser.Game(config);
+  </script>
+
+
+
+</body>
+</html>
