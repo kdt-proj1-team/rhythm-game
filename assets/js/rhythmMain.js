@@ -23,10 +23,14 @@ class rhythmMain extends Phaser.Scene{
 
   this.load.image('trackBackground', '/assets/img/trackBackground.png');
 
+  // 배경음악 파일 로드
+  this.load.audio('music', '/assets/sounds/music.mp3');
+
   this.load.image('notebar', '/assets/img/notebar.png');
 
   this.load.image('note1', '/assets/img/note1.png');
   
+
   }
 
   create(){
@@ -41,6 +45,18 @@ class rhythmMain extends Phaser.Scene{
 
     this.bg = this.add.sprite(-40, 0, 'myAnimation').setOrigin(0, 0).play('playAnimation');
     this.bg.setDisplaySize(this.scale.width+80, this.scale.height);
+
+    // 배경음악 추가
+    this.music = this.sound.add('music');
+
+    // 배경음악 재생 및 루프 설정
+    this.music.play({ loop: false });
+
+    // 배경음악이 끝났을 때 이벤트 처리
+    this.music.on('complete', this.onMusicComplete, this);
+
+    // 배경음악 음량 설정 (선택사항)
+    this.music.setVolume(0.5); // 0.0 ~ 1.0 사이 값으로 음량 조절
 
     // 미스 카운트 표시
     this.missText = this.add.text(10, 40, '미스: 0 / ' + this.maxMissCount, { fontSize: '24px', fill: '#fff' });
@@ -206,14 +222,7 @@ spawnNoteAt(trackIndex) {
 
   
 
-  gameOver() {
-    // 필요한 정리 작업
-    // 예: 배경 음악 중지
-    // this.music.stop();
-
-    // GameOverScene으로 이동
-    this.scene.start('gameOver', { score: this.score });
-  }
+  
 
 
   handleInput() {
@@ -249,14 +258,25 @@ spawnNoteAt(trackIndex) {
 
     
     // 미스 처리
-    this.score -= 5;
+    this.score -= 10;
     this.scoreText.setText('점수: ' + this.score);
 
     
   }
 
+  onMusicComplete() {
+    // 게임 종료 처리
+    
+    this.scene.start('gameComplete', { score: this.score, playTime: this.playTime });
+  }
+
+
   gameOver(){
     // GameOverScene으로 데이터 전달
+    if (this.music) {
+      this.music.stop();
+    }
+
   this.scene.start('rhythmGameOver', { score: this.score, playTime: this.playTime });
   }
 
