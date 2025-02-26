@@ -7,11 +7,13 @@ class rhythmMain extends Phaser.Scene{
     this.notes = [];       // 떨어지는 노트들
     this.speed = 200;      // 노트 떨어지는 속도
     this.spawnInterval = 1000; // 노트 생성 간격 (밀리초)
-    this.missCount = 0;       // 미스 카운트 초기화
-    this.maxMissCount = 5;    // 최대 미스 허용 횟수
-    this.isWarning = false;   // 경고 상태 여부
-    this.playTime = 0; // 플레이 시간 (밀리초 단위)
+    
+    
+    this.score;
+    this.playTime;
   }
+
+  
 
   preload(){
     
@@ -57,9 +59,13 @@ class rhythmMain extends Phaser.Scene{
 
     // 배경음악 음량 설정 (선택사항)
     this.music.setVolume(0.5); // 0.0 ~ 1.0 사이 값으로 음량 조절
-
+    this.score = 0;
+    this.playTime = 0;
+    this.isWarning = false;
+    this.maxMissCount = 5;
+    this.missCount = 0;
     // 미스 카운트 표시
-    this.missText = this.add.text(10, 40, '미스: 0 / ' + this.maxMissCount, { fontSize: '24px', fill: '#fff' });
+    this.missText = this.add.text(10, 40, 'Miss : 0 / ' + this.maxMissCount, { fontSize: '24px', fill: '#fff' });
     // 시간 표시
     this.playTime = 0;
 
@@ -171,7 +177,7 @@ spawnNoteAt(trackIndex) {
 
         // 미스 카운트 증가
         this.missCount++;
-        this.missText.setText('미스: ' + this.missCount + ' / ' + this.maxMissCount);
+        this.missText.setText('Miss : ' + this.missCount + ' / ' + this.maxMissCount);
 
         // **경고 상태 체크**
       if (this.missCount >= this.maxMissCount - 2 && !this.isWarning) {
